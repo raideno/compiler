@@ -1,0 +1,6 @@
+program erroneousProgram 
+    var x: integer;
+        y: real;
+begin 
+    x *= 10;
+end.

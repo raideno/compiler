@@ -1,0 +1,8 @@
+yacc|buisson:
+    LR(0) ?
+    semantique, syntaxique, generation de code
+
+comment faire pour crée des options comme -ly pour link notre librairei, ca marche comment ?
+
+ca veux dire quoi le code en dessous ?
+    extern int yyval;
