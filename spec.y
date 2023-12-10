@@ -3,30 +3,25 @@
 #include <stdio.h>
 
 int yylex();
-void yyerror(char *s);
+int yywrap();
+
+void yyerror(const char *s);
 
 %}
 
 %%
-
 S : T '\n'          {printf("Analyse réussie\n"); return 0;}
 T : 'a' T 'b'       {printf("found T\n");}
   | 'a' 'b'         {printf("found ab\n");}
   ;
-
 %%
 
-void yyerror(char *s)
-{ 
-    printf("%s\n", s);
-}
-
-int yylex()
+void yyerror (const char *s) /* Called by yyparse on error */
 {
-    return getchar();
+  printf("%s\n", s);
 }
 
 int main(void)
 {
-    yyparse();
+  yyparse();
 }

@@ -149,40 +149,44 @@ CONSTANTE ({CHIFFRE})+
 
 %%
 
-int main(int argc, char *argv[])
-{
-	bool logging = true;
+// int main(int argc, char *argv[])
+// {
+// 	bool logging = true;
 
-	if (argc > 1 && strcmp(argv[1], "no-logging") == 0)
-		logging = false;
+// 	if (argc > 1 && strcmp(argv[1], "no-logging") == 0)
+// 		logging = false;
 
-	if (logging)
-		printf("output-program:");
+// 	if (logging)
+// 		printf("output-program:");
 	
-	if (logging)
-		print_lines(2);
+// 	if (logging)
+// 		print_lines(2);
 
-	yylex();
+// 	yylex();
 
-	if (logging)
-		print_lines(2);
+// 	if (logging)
+// 		print_lines(2);
 
-	if (logging)
-	{
-		print_table(operateurs_table, operateurs_table_length, "operateur-id", "operateur");
-		print_lines(1);
-		print_table(separateurs_table, separateurs_table_length, "seprateur-id", "seprateur");
-		print_lines(1);
-		print_table(keywords_table, keywords_table_length, "keyword-id", "keyword");
-		print_lines(1);
-		print_table(symboles_table, symboles_table_length, "symbole-id", "symbole");
-	}
+// 	if (logging)
+// 	{
+// 		print_table(operateurs_table, operateurs_table_length, "operateur-id", "operateur");
+// 		print_lines(1);
+// 		print_table(separateurs_table, separateurs_table_length, "seprateur-id", "seprateur");
+// 		print_lines(1);
+// 		print_table(keywords_table, keywords_table_length, "keyword-id", "keyword");
+// 		print_lines(1);
+// 		print_table(symboles_table, symboles_table_length, "symbole-id", "symbole");
+// 	}
 
-	if (logging)
-	{
-		print_lines(1);
-		printf(TEXT_UNDERLINE_SET TEXT_WEIGHT_BOLD_SET "[note]:" TEXT_WEIGHT_BOLD_RESET TEXT_UNDERLINE_RESET " si vous voulez pas afficher les tables utilisez le parametre 'no-logging'.\n");
-	}
+// 	if (logging)
+// 	{
+// 		print_lines(1);
+// 		printf(TEXT_UNDERLINE_SET TEXT_WEIGHT_BOLD_SET "[note]:" TEXT_WEIGHT_BOLD_RESET TEXT_UNDERLINE_RESET " si vous voulez pas afficher les tables utilisez le parametre 'no-logging'.\n");
+// 	}
 
-	return 0;
-};
+// 	return 0;
+// };
+
+int yywrap() {
+    return 1;
+}
