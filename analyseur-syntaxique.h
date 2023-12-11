@@ -67,8 +67,13 @@ extern int yydebug;
     SP_DOT = 268,                  /* SP_DOT  */
     SP_COMMA = 269,                /* SP_COMMA  */
     SP_SEMICOLON = 270,            /* SP_SEMICOLON  */
-    OP_PLUS = 271,                 /* OP_PLUS  */
-    OP_ASSIGN = 272                /* OP_ASSIGN  */
+    SP_OPPENING_PARENTHISIS = 271, /* SP_OPPENING_PARENTHISIS  */
+    SP_CLOSING_PARENTHISIS = 272,  /* SP_CLOSING_PARENTHISIS  */
+    OP_PLUS = 273,                 /* OP_PLUS  */
+    OP_MINUS = 274,                /* OP_MINUS  */
+    OP_MULT = 275,                 /* OP_MULT  */
+    OP_DIV = 276,                  /* OP_DIV  */
+    OP_ASSIGN = 277                /* OP_ASSIGN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

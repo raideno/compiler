@@ -4,5 +4,6 @@ program erroneousProgram
 begin 
     x := 10;
     y := 12;
-    y := 12,
+    y := 12 + (45 - 9) + (45 * x + (45 * 2) / 8);
+    y := -y;
 end.

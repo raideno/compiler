@@ -13,29 +13,39 @@
 	int ligne_char = 0;
 
 	// Creation et Remplissage Table separateurs
-	int separateurs_table_length = 4;
+	int separateurs_table_length = 6;
 	char separateurs_table[MAX_LINES][MAX_COLUMN_LENGTH] = {
 		",",
 		".",
 		":",
-		";"
+		";",
+		"(",
+		")"
 	};
 	int corresponding_separateurs_table[] = {
 		SP_COMMA,
 		SP_DOT,
 		SP_COLON,
 		SP_SEMICOLON,
+		SP_OPPENING_PARENTHISIS,
+		SP_CLOSING_PARENTHISIS
 	};
 
 	// Creation et Remplissage Table des operateurs
-	int operateurs_table_length = 2;
+	int operateurs_table_length = 5;
 	char operateurs_table[MAX_LINES][MAX_COLUMN_LENGTH] = {
 		"+",
-		":="
+		":=",
+		"-",
+		"*",
+		"/"
 	};
 	int corresponding_operateurs_table[] = {
 		OP_PLUS,
 		OP_ASSIGN,
+		OP_MINUS,
+		OP_MULT,
+		OP_DIV
 	};
 
 	// Creation et Remplissage Table des mots clés
@@ -56,7 +66,7 @@
 		KW_VAR,
 		KW_INTEGER,
 		KW_REAL,
-		KW_BOOLEAN,
+		KW_BOOLEAN
 	};
 
 	// Creation et Table des symboles
@@ -131,9 +141,9 @@ LETTRE [a-z]|[A-Z]
 CHIFFRE [0-9]
 UNDERSCORE _
 
-SEPARATEUR ;|:|\.|,
+SEPARATEUR ;|:|\.|,|\)|\(
 
-OPERATEUR \+|:=
+OPERATEUR \+|:=|\*|-|\/
 
 KEYWORD program|begin|end|var|integer|real|boolean
 
@@ -158,47 +168,9 @@ CONSTANTE ({CHIFFRE})+
 
 [\n]													{ligne++; ligne_char = 0;/*printf("<line-break, %s>", yytext);*/}
 
-[^a-z]|[^A-Z]|[^0-9]|[^;,:\.]|[^+]|[^\t\n\r ]|^:|=		{printf("\n\n"); printf(TEXT_WEIGHT_BOLD_SET TEXT_UNDERLINE_SET TEXT_COLOR_RED "[analyseur-lexicale](erreur):" TEXT_COLOR_RESET TEXT_UNDERLINE_RESET TEXT_WEIGHT_BOLD_RESET " ligne-%d:%d, " TEXT_UNDERLINE_SET TEXT_WEIGHT_BOLD_SET "%s" TEXT_WEIGHT_BOLD_RESET TEXT_UNDERLINE_RESET, ligne + 1, ligne_char, yytext); printf("\n\n"); exit(EXIT_FAILURE);}
+[^a-z]|[^A-Z]|[^0-9]|[^;,:\.\(\)]|[^+\-\*\/]|[^\t\n\r ]|^:|=		{printf("\n\n"); printf(TEXT_WEIGHT_BOLD_SET TEXT_UNDERLINE_SET TEXT_COLOR_RED "[analyseur-lexicale](erreur):" TEXT_COLOR_RESET TEXT_UNDERLINE_RESET TEXT_WEIGHT_BOLD_RESET " ligne-%d:%d, " TEXT_UNDERLINE_SET TEXT_WEIGHT_BOLD_SET "%s" TEXT_WEIGHT_BOLD_RESET TEXT_UNDERLINE_RESET, ligne + 1, ligne_char, yytext); printf("\n\n"); exit(EXIT_FAILURE);}
 
 %%
-
-// int main(int argc, char *argv[])
-// {
-// 	bool logging = true;
-
-// 	if (argc > 1 && strcmp(argv[1], "no-logging") == 0)
-// 		logging = false;
-
-// 	if (logging)
-// 		printf("output-program:");
-	
-// 	if (logging)
-// 		print_lines(2);
-
-// 	yylex();
-
-// 	if (logging)
-// 		print_lines(2);
-
-// 	if (logging)
-// 	{
-// 		print_table(operateurs_table, operateurs_table_length, "operateur-id", "operateur");
-// 		print_lines(1);
-// 		print_table(separateurs_table, separateurs_table_length, "seprateur-id", "seprateur");
-// 		print_lines(1);
-// 		print_table(keywords_table, keywords_table_length, "keyword-id", "keyword");
-// 		print_lines(1);
-// 		print_table(symboles_table, symboles_table_length, "symbole-id", "symbole");
-// 	}
-
-// 	if (logging)
-// 	{
-// 		print_lines(1);
-// 		printf(TEXT_UNDERLINE_SET TEXT_WEIGHT_BOLD_SET "[note]:" TEXT_WEIGHT_BOLD_RESET TEXT_UNDERLINE_RESET " si vous voulez pas afficher les tables utilisez le parametre 'no-logging'.\n");
-// 	}
-
-// 	return 0;
-// };
 
 int yywrap() {
     return 1;

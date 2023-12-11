@@ -1,5 +1,8 @@
 program myProgram    
-    var x * integer;
+    var x : integer;
 begin
-    x := 42;
+    x := 42 + 5;
+    x := 42 * 5;
+    x := 42 * y / 95;
+    z := 78;
 end.
