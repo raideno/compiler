@@ -22,7 +22,8 @@ clean-build-directory:
 compilateur.out: compilateur
 	gcc -o compilateur.out analyseur-lexicale.o analyseur-syntaxique.o
 
-compilateur: analyseur-lexicale.o analyseur-syntaxique.o
+compilateur: analyseur-syntaxique.o analyseur-lexicale.o
+# compilateur: analyseur-lexicale.o analyseur-syntaxique.o
 
 clean-compilateur:
 	rm -rf compilateur.out
@@ -52,8 +53,8 @@ analyseur-syntaxique.o: analyseur-syntaxique.c
 	gcc -c -o analyseur-syntaxique.o analyseur-syntaxique.c
 
 analyseur-syntaxique.c: spec.y
-	yacc -ly -o analyseur-syntaxique.c spec.y
-# yacc -v -d -ly -o analyseur-syntaxique.c spec.y
+	bison -Wcounterexamples --report=none -H -o analyseur-syntaxique.c spec.y
+# bison -H -ly -o analyseur-syntaxique.c spec.y
 
 clean-analyseur-syntaxique:
 	rm -rf analyseur-syntaxique.c

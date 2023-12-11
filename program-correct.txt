@@ -1,5 +1,5 @@
 program myProgram    
-    var x: integer;
+    var x * integer;
 begin
     x := 42;
 end.

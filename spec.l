@@ -3,14 +3,8 @@
 	#include <string.h>
 	#include <stdbool.h>
 
-	#define TEXT_COLOR_RED "\e[31m"
-	#define TEXT_COLOR_RESET "\e[m"
-
-	#define TEXT_WEIGHT_BOLD_SET "\e[1m"
-	#define TEXT_WEIGHT_BOLD_RESET "\e[m"
-
-	#define TEXT_UNDERLINE_SET "\x1B[4m"
-	#define TEXT_UNDERLINE_RESET "\x1B[0m"
+	#include "utils.h"
+	#include "analyseur-syntaxique.h"
 
 	#define MAX_LINES 1024
 	#define MAX_COLUMN_LENGTH 32
@@ -26,12 +20,22 @@
 		":",
 		";"
 	};
+	int corresponding_separateurs_table[] = {
+		SP_COMMA,
+		SP_DOT,
+		SP_COLON,
+		SP_SEMICOLON,
+	};
 
 	// Creation et Remplissage Table des operateurs
 	int operateurs_table_length = 2;
 	char operateurs_table[MAX_LINES][MAX_COLUMN_LENGTH] = {
 		"+",
 		":="
+	};
+	int corresponding_operateurs_table[] = {
+		OP_PLUS,
+		OP_ASSIGN,
 	};
 
 	// Creation et Remplissage Table des mots clés
@@ -43,7 +47,16 @@
 		"var",
 		"integer",
 		"real",
-		"boolean"
+		"boolean",
+	};
+	int corresponding_keywords_table[] = {
+		KW_PROGRAM,
+		KW_BEGIN,
+		KW_END,
+		KW_VAR,
+		KW_INTEGER,
+		KW_REAL,
+		KW_BOOLEAN,
 	};
 
 	// Creation et Table des symboles
@@ -130,22 +143,22 @@ CONSTANTE ({CHIFFRE})+
 
 %%
 
-{KEYWORD}  	    										{printf("<keyword, %d>", find_from_table(keywords_table, keywords_table_length, yytext));}
+{KEYWORD}  	    										{int kw_id = find_from_table(keywords_table, keywords_table_length, yytext); printf("<keyword, %d>", kw_id); return corresponding_keywords_table[kw_id]; }
 
-{ID}       												{printf("<symbole, %d>", get_symbole_id_or_insert(yytext));}
+{ID}       												{int sym_id = get_symbole_id_or_insert(yytext); printf("<symbole, %d>", sym_id); return ID;}
 
-{CONSTANTE}       										{printf("<constante, %s>", yytext);}
+{CONSTANTE}       										{printf("<constante, %s>", yytext); yylval = atoi(yytext); return ENTIER;}
 
-{SEPARATEUR}											{printf("<separateur, %d>", find_from_table(separateurs_table, separateurs_table_length, yytext));}
+{SEPARATEUR}											{int sp_id = find_from_table(separateurs_table, separateurs_table_length, yytext); printf("<separateur, %d>", sp_id); return corresponding_separateurs_table[sp_id]; }
 
-{OPERATEUR}												{printf("<operateur, %d>", find_from_table(operateurs_table, operateurs_table_length, yytext));}
+{OPERATEUR}												{int op_id = find_from_table(operateurs_table, operateurs_table_length, yytext); printf("<operateur, %d>", op_id); return corresponding_operateurs_table[op_id]; }
 
 
 [\t\r ]									    			{;/*printf("<space, %s>", yytext);*/}
 
 [\n]													{ligne++; ligne_char = 0;/*printf("<line-break, %s>", yytext);*/}
 
-[^a-z]|[^A-Z]|[^0-9]|[^;,:\.]|[^+]|[^\t\n\r ]|^:|=		{printf("\n\n"); printf(TEXT_UNDERLINE_SET TEXT_COLOR_RED "[syntax-error]:" TEXT_COLOR_RESET TEXT_UNDERLINE_RESET " ligne-%d:%d, " TEXT_UNDERLINE_SET TEXT_WEIGHT_BOLD_SET "%s" TEXT_WEIGHT_BOLD_RESET TEXT_UNDERLINE_RESET, ligne + 1, ligne_char, yytext); printf("\n\n"); exit(EXIT_FAILURE);}
+[^a-z]|[^A-Z]|[^0-9]|[^;,:\.]|[^+]|[^\t\n\r ]|^:|=		{printf("\n\n"); printf(TEXT_WEIGHT_BOLD_SET TEXT_UNDERLINE_SET TEXT_COLOR_RED "[analyseur-lexicale](erreur):" TEXT_COLOR_RESET TEXT_UNDERLINE_RESET TEXT_WEIGHT_BOLD_RESET " ligne-%d:%d, " TEXT_UNDERLINE_SET TEXT_WEIGHT_BOLD_SET "%s" TEXT_WEIGHT_BOLD_RESET TEXT_UNDERLINE_RESET, ligne + 1, ligne_char, yytext); printf("\n\n"); exit(EXIT_FAILURE);}
 
 %%
 

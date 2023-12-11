@@ -1,6 +1,8 @@
 program erroneousProgram 
     var x: integer;
-        y: real;
+    var y: real;
 begin 
-    x *= 10;
+    x := 10;
+    y := 12;
+    y := 12,
 end.
